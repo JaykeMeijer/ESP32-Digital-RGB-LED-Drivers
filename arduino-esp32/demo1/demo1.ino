@@ -64,7 +64,9 @@ void dumpDebugBuffer(int id, char * debugBuffer) {
 void setup() {
   Serial.begin(115200);
   Serial.println("Initializing...");
-  if(ws2812_init(DATA_PIN, LED_WS2812B)) {
+  
+  int pins[] = {DATA_PIN};
+  if(ws2812_init(pins, LED_WS2812B, 1)) {
     Serial.println("Init FAILURE: halting");
     while (true) {};
   }
@@ -95,8 +97,8 @@ void loop_FOR_DEBUG_TESTING() {
   pixels[0] = makeRGBVal(2, 1, 3);
   pixels[1] = makeRGBVal(5, 4, 6);
   pixels[2] = makeRGBVal(8, 7, 9);
-  ws2812_setColors(2, pixels);
-  //ws2812_setColors(NUM_PIXELS, pixels);
+  ws2812_setColors(0, 2, pixels);
+  //ws2812_setColors(0, NUM_PIXELS, pixels);
   #if DEBUG_WS2812_DRIVER
     dumpDebugBuffer(passes, ws2812_debugBuffer);
   #endif
@@ -110,8 +112,8 @@ void displayOff() {
   for (int i = 0; i < NUM_PIXELS; i++) {
     pixels[i] = makeRGBVal(0, 0, 0);
   }
-  ws2812_setColors(2, pixels);
-  //ws2812_setColors(NUM_PIXELS, pixels);
+  ws2812_setColors(0, 2, pixels);
+  //ws2812_setColors(0, NUM_PIXELS, pixels);
 }
 
 void scanner(unsigned long delay_ms, unsigned long timeout_ms) {
@@ -122,7 +124,7 @@ void scanner(unsigned long delay_ms, unsigned long timeout_ms) {
   while (RUN_FOREVER || (millis() - start_ms < timeout_ms)) {
     pixels[prevIxd] = makeRGBVal(0, 0, 0);
     pixels[currIdx] = makeRGBVal(MAX_COLOR_VAL, MAX_COLOR_VAL, MAX_COLOR_VAL);;
-    ws2812_setColors(NUM_PIXELS, pixels);
+    ws2812_setColors(0, NUM_PIXELS, pixels);
     prevIxd = currIdx;
     currIdx++;
     if (currIdx >= NUM_PIXELS) {
@@ -190,7 +192,7 @@ void rainbow(unsigned long delay_ms, unsigned long timeout_ms)
       }
     }
   
-    ws2812_setColors(NUM_PIXELS, pixels);
+    ws2812_setColors(0, NUM_PIXELS, pixels);
   
     delay(delay_ms);
   }

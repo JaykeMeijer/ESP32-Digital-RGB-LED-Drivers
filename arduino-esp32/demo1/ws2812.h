@@ -47,8 +47,8 @@ const int ws2812_debugBufferSz = 1024;
 #endif
 
 enum led_types {LED_WS2812, LED_WS2812B, LED_SK6812, LED_WS2813};
-extern int  ws2812_init(int gpioNum, int ledType);
-extern void ws2812_setColors(uint16_t length, rgbVal *array);
+extern int  ws2812_init(int gpioNum[], int ledType, uint8_t stripCount);
+extern void ws2812_setColors(uint8_t strip, uint16_t length, rgbVal *array);
 
 inline rgbVal makeRGBVal(uint8_t r, uint8_t g, uint8_t b)
 {
